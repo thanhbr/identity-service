@@ -6,4 +6,5 @@ import spring.api.identity_service.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
+    boolean existsByUsername(String username);
 }
