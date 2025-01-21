@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import spring.api.identity_service.dto.request.UserCreationRequest;
 import spring.api.identity_service.dto.request.UserUpdateRequest;
 import spring.api.identity_service.entity.User;
+import spring.api.identity_service.exception.AppException;
+import spring.api.identity_service.exception.ErrorCode;
 import spring.api.identity_service.repository.UserRepository;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public class UserService {
         User user = new User();
 
         if(userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username already exists");
+            throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
         }
 
         user.setUsername(request.getUsername());
