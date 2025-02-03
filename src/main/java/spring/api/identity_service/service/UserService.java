@@ -3,6 +3,8 @@ package spring.api.identity_service.service;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import spring.api.identity_service.dto.request.UserCreationRequest;
 import spring.api.identity_service.dto.request.UserUpdateRequest;
@@ -36,7 +38,8 @@ public class UserService {
         }
 
         User user = userMapper.addUser(request);
-
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userRepository.save(user);
     }
 
