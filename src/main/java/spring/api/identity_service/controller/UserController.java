@@ -4,7 +4,8 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import spring.api.identity_service.dto.request.ApiResponse;
 import spring.api.identity_service.dto.request.UserCreationRequest;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     UserService userService;
 
     @PostMapping
@@ -30,8 +32,10 @@ public class UserController {
     }
 
     @GetMapping
-    List<User> getAllUsers() {
-        return userService.getAllUsers();
+    ApiResponse<List<UserResponse>> getUsers() {
+        return ApiResponse.<List<UserResponse>>builder()
+                .result(userService.getUsers())
+                .build();
     }
 
     @GetMapping("/{userId}")
